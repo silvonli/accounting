@@ -121,8 +121,8 @@ mod tests {
     #[test]
     fn format_number_float_test() {
         let x = 123456789.213123f64;
-        let re = x.format_number(0, ",", ".");
+        let re = x.format_number(2, ",", ".");
         println!("float value x={} format={}", x, re);
-        assert_eq!(re, "123,456,789");
+        assert_eq!(re, "123,456,789.21");
 	}
 }
