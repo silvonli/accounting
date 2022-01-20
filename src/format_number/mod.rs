@@ -1,6 +1,6 @@
 
-
-use crate::format_macro::*;
+mod format_macro;
+use format_macro::*;
 
 pub trait FormatNumber {
     fn format_number(&self, precision: usize, thousand: &str, decimal: &str) -> String;
@@ -107,6 +107,7 @@ mod tests {
         let x = -220300isize;
         let re = x.format_number(2, ",", ".");
         println!("int value x={} format{}", x, re);
+        assert_eq!(re, "-220,300.00");
 	}
 
     #[test]
@@ -114,12 +115,14 @@ mod tests {
         let x = 320300usize;
         let re = x.format_number(2, ",", ".");
         println!("uint value x={} format={}", x, re);
+        assert_eq!(re, "320,300.00");
 	}
 
     #[test]
     fn format_number_float_test() {
-        let x = -1234.2f64;
-        let re = x.format_number(2, ",", ".");
+        let x = 123456789.213123f64;
+        let re = x.format_number(0, ",", ".");
         println!("float value x={} format={}", x, re);
+        assert_eq!(re, "123,456,789");
 	}
 }

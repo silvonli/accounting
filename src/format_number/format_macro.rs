@@ -71,14 +71,16 @@ macro_rules! format_number_float {
 
             let v:Vec<char> = format!("{0:.1$}", x, precision).chars().collect();
     
-            let mut l = v.len() - 1;
+            let l;
             if let Some(index) = v.iter().position(|&r| r == '.') {
-                l = index;
-            } 
+                l = index - 1;
+            } else {
+                l = v.len() - 1;
+            }
             
             let mut buffer = String::new();
             let mut j = 0;
-            for i in (0..l).rev() {
+            for i in (0..=l).rev() {
                 j += 1;
                 buffer.push(v[i]);
                 if j==3 && i>0 && !(i==1 && v[0] == '-') {
@@ -93,7 +95,7 @@ macro_rules! format_number_float {
                 result = result.replace(",", thousand);
             }
 
-            let mut extra: String = v[l..v.len()].into_iter().collect();
+            let mut extra: String = v[l+1..v.len()].into_iter().collect();
             if decimal != "." {
                 extra = extra.replace(".", decimal);
             }

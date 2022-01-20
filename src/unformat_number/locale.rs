@@ -38,7 +38,7 @@ impl <'a> Locale <'a> {
 	}
 }
 
-pub fn locale_map(currency: &str) -> Option<Locale> {
+pub fn locale_info_map(currency: &str) -> Option<Locale> {
 	let empty = "";
     match currency {
 		"AED" => Some(Locale::new("UAE Dirham", 2, ",", ".", " ", empty, empty, "Dhs.", true)),
