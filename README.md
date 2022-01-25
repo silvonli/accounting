@@ -7,10 +7,10 @@ accounting is a library for money and currency formatting. (inspired by [account
 Set the format string of `Accounting` variable，then format numbers as money values.
 ```Rust
 use accounting::Accounting;
-fc main() {
+fn main() {
     let mut ac = Accounting::new_from("$", 2);
-	ac.set_format("{s} {v}");
-	assert_eq!(ac.format_money(1000000), "$ 1,000,000.00");
+    ac.set_format("{s} {v}");
+    assert_eq!(ac.format_money(1000000), "$ 1,000,000.00");
     assert_eq!(ac.format_money(-5000), "-$ 5,000.00");
 }
 ```
