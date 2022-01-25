@@ -1,6 +1,6 @@
 # accounting
 
-[![Crate](https://img.shields.io/crates/v/rand.svg)](https://crates.io/crates/accounting)
+[![Crate](https://img.shields.io/crates/v/accounting.svg)](https://crates.io/crates/accounting)
 [![API](https://docs.rs/rand/badge.svg)](https://docs.rs/accounting)
 
 
