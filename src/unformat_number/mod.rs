@@ -1,38 +1,78 @@
-
-use regex::Regex;
-
+//! Strip out all currency formatting and return the numberic string.  
+//! 
+//! The [unformat] function pulls the currency descripter from the locale_info_map and 
+//! uses it to return an unformatted value based on thousands seperator and decimal seperator.
+//! ```
+//! # use accounting::unformat_number::unformat;
+//! # use accounting::unformat_number::UnformatError;
+//! assert_eq!(unformat("$4,500.23", 2, "USD"), Ok("4500.23".to_string()));
+//! assert_eq!(unformat("$45,567.10", 2, "zzz"), Err(UnformatError::NoLocaleFound));
+//! ```
+//! 
 mod locale;
 
-// unformat_number takes a string of the number to strip currency info on
-// and precision for decimals.
-// It pulls the currency descripter from the locale_info_map and uses it to return an unformatted value
-// based on thousands seperator and decimal seperator 
-pub fn unformat_number(n: &str, precision: usize, currency: &str) -> String {
-	let lc: locale::Locale;
+use std::fmt;
+use std::error;
+use std::num::ParseFloatError;
+use regex::Regex;
+use locale::{Locale, locale_info_map};
+
+type Result<T> = std::result::Result<T, UnformatError>;
+
+#[derive(Debug, PartialEq)]
+pub enum UnformatError {
+    NoLocaleFound,
+    Parse(ParseFloatError),
+}
+
+impl fmt::Display for UnformatError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match *self {
+            UnformatError::NoLocaleFound => write!(f, "no locale info found"),
+            UnformatError::Parse(ref e) => e.fmt(f),
+        }
+    }
+}
+
+impl error::Error for UnformatError {
+    fn source(&self) -> Option<&(dyn error::Error + 'static)> {
+        match *self {
+            UnformatError::NoLocaleFound => None,
+            UnformatError::Parse(ref e) => Some(e),
+        }
+    }
+}
+
+impl From<ParseFloatError> for UnformatError {
+    fn from(err: ParseFloatError) -> UnformatError {
+        UnformatError::Parse(err)
+    }
+}
+
+/// Takes a string of the number to strip currency info on
+/// and precision for decimals.
+pub fn unformat(n: &str, precision: usize, currency: &str) -> Result<String> {
+	let lc: Locale;
 	let currency = currency.to_uppercase();
 	
-	if let Some(val)=  locale::locale_info_map(&currency) {
+	if let Some(val)=  locale_info_map(&currency) {
 		lc = val;
 	} else {
-		panic!("No Locale Info Found");
+		return Err(UnformatError::NoLocaleFound);
 	}
 
 	let r = Regex::new(r"[^0-9-., ]").unwrap();
 	let mut num = r.replace_all(n, "").into_owned();
 	num = num.replace(lc.thousands_seperator, "");
 
-	// Replace decimal seperator with a decimal at specified precision
+	// Replace decimal seperator with a decimal
 	if lc.decimal_seperator != "." {
 		num = num.replace(lc.decimal_seperator, ".");
 	}
 
-	num = set_precision(&num, precision);
-	num
-}
-
-fn set_precision(num: &str, precision: usize) -> String {
-	let v: f64 = num.trim().parse().unwrap();
-	format!("{0:.1$}", v, precision)
+	let v: f64 = num.trim().parse()?;
+	num = format!("{0:.1$}", v, precision);
+	Ok(num)
 }
 
 
@@ -40,15 +80,14 @@ fn set_precision(num: &str, precision: usize) -> String {
 mod tests {
 	use super::*;
 	#[test]
-	fn unformat_number_test() {
-		assert_eq!(unformat_number("$4,500.23", 2, "USD"), "4500.23");
-		assert_eq!(unformat_number("EUR 45.000,33", 2, "eur"), "45000.33");
-		assert_eq!(unformat_number("EUR 111.145.000,33", 2, "eur"), "111145000.33");
+	fn unformat_test() {
+		assert_eq!(unformat("$4,500.23", 2, "USD"), Ok("4500.23".to_string()));
+		assert_eq!(unformat("EUR 12.500,3474", 3, "EUR"), Ok("12500.347".to_string()));
+		assert_eq!(unformat("EUR 111.145.000,33", 2, "eur"), Ok("111145000.33".to_string()));
 	}
 
 	#[test]
-	fn unformat_number_error_test() {
-		// unformat_number("$45,567.10", 2, "zzz");
-		// todo
+	fn unformat_error_test() {
+		assert_eq!(unformat("$45,567.10", 2, "zzz"), Err(UnformatError::NoLocaleFound));
 	}
 }

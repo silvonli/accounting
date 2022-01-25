@@ -1,24 +1,15 @@
 
 
 pub struct Locale<'a> {
-	// currency name
-	pub name: &'a str,
-	// default decimal length
-	pub fraction_length: usize,
-	// thousands seperator
-	pub thousands_seperator: &'a str,
-	// decimal seperator
-	pub decimal_seperator: &'a str,
-	// space seperator
-	pub space_seperator: &'a str,
-	// UTF symbol
-	pub utf_symbol: &'a str,
-	// HTML symbol
-	pub html_symbol: &'a str,
-	// Common symbol
-	pub common_symbol: &'a str,
-	// symbol before or after currency
-	pub is_pre: bool,
+	pub name: &'a str, // currency name
+	pub fraction_length: usize, // default decimal length
+	pub thousands_seperator: &'a str, // thousands seperator
+	pub decimal_seperator: &'a str, // decimal seperator
+	pub space_seperator: &'a str, // space seperator
+	pub utf_symbol: &'a str, // UTF symbol
+	pub html_symbol: &'a str, // HTML symbol
+	pub common_symbol: &'a str, // Common symbol
+	pub is_pre: bool, // symbol before or after currency
 }
 
 impl <'a> Locale <'a> {

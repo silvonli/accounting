@@ -1,10 +1,10 @@
 
 
-use super::accounting::Accounting;
+use super::Accounting;
 #[test]
 fn accounting_test() {
 	let mut ac = Accounting::new_from("$", 2);
-	ac.set_format_all("{v} {s}");
+	ac.set_format("{v} {s}");
 	assert_eq!(ac.format_money(123456789.213123), "123,456,789.21 $");
 	assert_eq!(ac.format_money(-123456789.213123), "-123,456,789.21 $");
 	assert_eq!(ac.format_money(0), "0.00 $");
@@ -85,7 +85,7 @@ fn account_format_money_test() {
 	assert_eq!(ac.format_money(500000), "£ 500,000");
 
 	let mut ac = Accounting::new_from("GBP", 0);
-	ac.set_format("{s} {v}");
+	ac.set_format_positive("{s} {v}");
 	ac.set_format_negative("{s} ({v})");
 	ac.set_format_zero("{s} --");
 	assert_eq!(ac.format_money(1000000), "GBP 1,000,000");
