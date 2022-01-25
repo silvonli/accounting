@@ -6,7 +6,7 @@
 //! # Examples
 //! 
 //! ```
-//! # use accounting::format_number::FormatNumber;
+//! # use accounting::FormatNumber;
 //! let x = 123456789.213123f64;
 //! assert_eq!(x.format_number(2, ",", "."), "123,456,789.21");
 //! ```

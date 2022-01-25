@@ -6,8 +6,7 @@
 //! # Examples
 //! 
 //! ```
-//! # use accounting::unformat_number::unformat;
-//! # use accounting::unformat_number::UnformatError;
+//! # use accounting::{unformat, UnformatError};
 //! assert_eq!(unformat("$4,500.23", 2, "USD"), Ok("4500.23".to_string()));
 //! assert_eq!(unformat("$45,567.10", 2, "zzz"), Err(UnformatError::NoLocaleFound));
 //! ```

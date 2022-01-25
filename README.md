@@ -4,7 +4,6 @@ accounting is a library for money and currency formatting. (inspired by [account
 
 
 ## Examples: 
-Set the format string of `Accounting` variable，then format numbers as money values.
 ```Rust
 use accounting::Accounting;
 fn main() {
@@ -14,7 +13,7 @@ fn main() {
     assert_eq!(ac.format_money(-5000), "-$ 5,000.00");
 }
 ```
-In the format string:
+Set the format string of `Accounting` variable，then format numbers as money values. In the format string:
 - {v} is placehoder of value, will be replaced by number.  
 - {s} is placehoder of symbol, will be replaced by currency symbol like $、￥ and so on.
 
@@ -88,18 +87,20 @@ pub trait FormatNumber {
 Examples:
 
 ```rust
+use accounting::FormatNumber;
 let x = 123456789.213123f64;
 assert_eq!(x.format_number(2, ",", "."), "123,456,789.21");
 ```
 
 
 
-## unformat_number::unformat
+## unformat function
 `unformat` function strips out all currency formatting and returns the numberic string.
 
 Examples:
 
 ```rust
+use accounting::unformat;
 assert_eq!(unformat("$4,500.23", 2, "USD"), Ok("4500.23".to_string()));
 assert_eq!(unformat("EUR 12.500,3474", 3, "EUR"), Ok("12500.347".to_string()));
 ```

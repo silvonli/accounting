@@ -11,8 +11,7 @@
 //!	assert_eq!(ac.format_money(-5000), "-$ 5,000.00");
 //! ```
 //! 
-//! Set the format string of [Accounting] variable，then format numbers as money values.  
-//! In the format string:  
+//! Set the format string of [Accounting] variable，then format numbers as money values.  In the format string:  
 //! - {v} is placehoder of value, will be replaced by number.  
 //! - {s} is placehoder of symbol, will be replaced by currency symbol like $、￥ and so on.
 //! 
@@ -22,7 +21,8 @@ mod tests;
 
 pub mod unformat_number;
 pub mod format_number;
-use format_number::FormatNumber;
+pub use format_number::FormatNumber;
+pub use unformat_number::{unformat, UnformatError};
 
 /// Format numbers as money values according to settings.   
 /// 
