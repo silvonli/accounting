@@ -1,8 +1,8 @@
 
 //! accounting is a library for money and currency formatting. 
 //! 
-//! ### Examples
-//! Set the format string of [Accounting] variable，then format numbers as money values.
+//! # Examples
+//! 
 //! ```
 //! # use accounting::Accounting;
 //! let mut ac = Accounting::new_from("$", 2);
@@ -10,6 +10,8 @@
 //!	assert_eq!(ac.format_money(1000000), "$ 1,000,000.00");
 //!	assert_eq!(ac.format_money(-5000), "-$ 5,000.00");
 //! ```
+//! 
+//! Set the format string of [Accounting] variable，then format numbers as money values.  
 //! In the format string:  
 //! - {v} is placehoder of value, will be replaced by number.  
 //! - {s} is placehoder of symbol, will be replaced by currency symbol like $、￥ and so on.
@@ -73,6 +75,9 @@ impl Accounting {
     }
     
     /// Create Accounting from symbol、 precision、thousand separator、 decimal separator and default settings.
+    /// 
+    /// # Examples
+    /// 
     /// ```
     /// # use accounting::Accounting;
     /// let ac = Accounting::new_from_seperator("€", 2, ".", ",");
@@ -109,6 +114,9 @@ impl Accounting {
     }
 
     /// Sets the separator for the thousands separation.
+    /// 
+    /// # Examples
+    /// 
     /// ```
     /// # use accounting::Accounting;
     /// let mut ac = Accounting::new_from("$", 2);
@@ -120,6 +128,9 @@ impl Accounting {
     }
 
     /// Sets the separator for the decimal separation.
+    /// 
+    /// # Examples
+    /// 
     /// ```
     /// # use accounting::Accounting;
     /// let mut ac = Accounting::new_from("$", 2);
@@ -130,7 +141,11 @@ impl Accounting {
         self.decimal = str.to_string();
     }
 
-    /// Sets the format string for positive and zero value. Also Sets format string by adding `-` at begining for negative value.
+    /// Sets the format string for positive and zero value. 
+    /// Also Sets format string by adding `-` at begining for negative value.
+    /// 
+    /// # Examples
+    /// 
     /// ```
     /// # use accounting::Accounting;
     /// let mut ac = Accounting::new_from("$", 2);
@@ -146,6 +161,9 @@ impl Accounting {
     }
 
     /// Sets the format string for positive values.
+    /// 
+    /// # Examples
+    /// 
     /// ```
     /// # use accounting::Accounting;
     /// let mut ac = Accounting::new_from("$", 2);

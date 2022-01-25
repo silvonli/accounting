@@ -2,6 +2,14 @@
 //! 
 //! This trait be used for formatting numberic types to string with custom precision and separators.
 //! Implemented types include： i8, u8, i16, u16 i32, u32 i64, u64, i128, u128, isize, usize, f32, f64。
+//!
+//! # Examples
+//! 
+//! ```
+//! # use accounting::format_number::FormatNumber;
+//! let x = 123456789.213123f64;
+//! assert_eq!(x.format_number(2, ",", "."), "123,456,789.21");
+//! ```
 
 mod format_macro;
 use format_macro::*;

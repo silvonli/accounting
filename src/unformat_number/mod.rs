@@ -2,13 +2,16 @@
 //! 
 //! The [unformat] function pulls the currency descripter from the locale_info_map and 
 //! uses it to return an unformatted value based on thousands seperator and decimal seperator.
+//! 
+//! # Examples
+//! 
 //! ```
 //! # use accounting::unformat_number::unformat;
 //! # use accounting::unformat_number::UnformatError;
 //! assert_eq!(unformat("$4,500.23", 2, "USD"), Ok("4500.23".to_string()));
 //! assert_eq!(unformat("$45,567.10", 2, "zzz"), Err(UnformatError::NoLocaleFound));
 //! ```
-//! 
+
 mod locale;
 
 use std::fmt;
