@@ -1,4 +1,8 @@
-# accounting - money and currency formatting for rust
+# accounting
+
+[![Crate](https://img.shields.io/crates/v/rand.svg)](https://crates.io/crates/accounting)
+[![API](https://docs.rs/rand/badge.svg)](https://docs.rs/accounting)
+
 
 accounting is a library for money and currency formatting. (inspired by [accounting for golang](https://github.com/leekchan/accounting))
 
