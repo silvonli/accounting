@@ -76,7 +76,7 @@ impl Accounting {
     /// ```
     /// # use accounting::Accounting;
     /// let ac = Accounting::new_from_seperator("€", 2, ".", ",");
-	/// assert_eq!(ac.format_money(4999.99), "€4.999,99");
+    /// assert_eq!(ac.format_money(4999.99), "€4.999,99");
     /// ```
     pub fn new_from_seperator(symbol: &str, precision: usize, thousand: &str, decimal: &str) -> Self {
         let mut ac = Self::default();
@@ -112,8 +112,8 @@ impl Accounting {
     /// ```
     /// # use accounting::Accounting;
     /// let mut ac = Accounting::new_from("$", 2);
-	/// ac.set_thousand_separator("'");
-	/// assert_eq!(ac.format_money(123456789.213123), "$123'456'789.21")
+    /// ac.set_thousand_separator("'");
+    /// assert_eq!(ac.format_money(123456789.213123), "$123'456'789.21")
     /// ```
     pub fn set_thousand_separator(&mut self, str: &str) {
         self.thousand = str.to_string();
