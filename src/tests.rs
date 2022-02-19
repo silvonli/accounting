@@ -1,6 +1,7 @@
 
 
 use super::Accounting;
+
 #[test]
 fn accounting_test() {
 	let mut ac = Accounting::new_from("$", 2);
@@ -37,6 +38,15 @@ fn accounting_set_decimal_separator_test() {
 	ac.set_decimal_separator("'");
 	assert_eq!(ac.format_money(123456789.213123), "$123,456,789'21")
 }
+#[cfg(feature="decimal")]
+#[test]
+fn according_format_money_decimal_type_test() {
+	let ac = Accounting::new_from("$", 2);
+	let x = rust_decimal::Decimal::new(0, 1);
+    assert_eq!(ac.format_money(x), "$0.00"); 
+	let x = rust_decimal::Decimal::new(-123456789213, 3);
+    assert_eq!(ac.format_money(x), "-$123,456,789.21"); 
+}
 
 #[test]
 fn account_format_money_type_test() {
@@ -61,6 +71,9 @@ fn account_format_money_type_test() {
 
 	assert_eq!(ac.format_money(-1f32), "-$1.00");
 	assert_eq!(ac.format_money(1f64), "$1.00");
+
+	assert_eq!(ac.format_money(-0i32), "$0.00");
+	assert_eq!(ac.format_money(0u32), "$0.00");
 }
 
 #[test]

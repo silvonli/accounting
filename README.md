@@ -79,8 +79,8 @@ assert_eq!(ac.format_money(123456789.213123), "$123,456,789'21")
 ## FormatNumber trait
 `FormatNumber` is a trait of the library.
 The type which implement this trait can be format to string with custom precision and separators. Implemented types include:   
-i8, u8, i16, u16 i32, u32 i64, u64, i128, u128, isize, usize, f32, f64
-
+* primitive type: i8, u8, i16, u16 i32, u32 i64, u64, i128, u128, isize, usize, f32, f64.
+* decimal type: `rust_decimal::Decimal`
 Trait define:
 ```rust
 pub trait FormatNumber {

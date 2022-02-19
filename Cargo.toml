@@ -16,3 +16,7 @@ description = "accounting is a library for money and currency formatting."
 
 [dependencies]
 regex = "1"
+rust_decimal = { version = "1.21", optional = true }
+[features]
+decimal = ["rust_decimal"]
+
