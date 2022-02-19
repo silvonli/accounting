@@ -1,4 +1,4 @@
-#![cfg(feature = "decimal")]
+
 use super::FormatNumber;
 use rust_decimal::Decimal;
 

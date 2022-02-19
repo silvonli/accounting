@@ -16,13 +16,10 @@
 //! - {s} is placehoder of symbol, will be replaced by currency symbol like $、￥ and so on.
 //! 
 
-#[cfg(test)]
-mod tests;
-
-pub mod unformat_number;
+pub mod unformat_money;
 pub mod format_number;
 pub use format_number::FormatNumber;
-pub use unformat_number::{unformat, UnformatError};
+pub use unformat_money::{unformat, UnformatError};
 
 /// Format numbers as money values according to settings.   
 /// 
@@ -209,4 +206,91 @@ impl Accounting {
         result = result.replace("{v}", &number_string);
         return result;
     }
+}
+
+
+#[cfg(test)]
+mod tests {
+
+    use super::Accounting;
+
+    #[test]
+    fn test_number_type() {
+        let ac = Accounting::new_from("$", 2);
+        assert_eq!(ac.format_money(-1i8), "-$1.00");
+        assert_eq!(ac.format_money(1u8), "$1.00");
+
+        assert_eq!(ac.format_money(-1i16), "-$1.00");
+        assert_eq!(ac.format_money(1u16), "$1.00");
+
+        assert_eq!(ac.format_money(-1i32), "-$1.00");
+        assert_eq!(ac.format_money(1u32), "$1.00");
+
+        assert_eq!(ac.format_money(-1i64), "-$1.00");
+        assert_eq!(ac.format_money(1u64), "$1.00");
+
+        assert_eq!(ac.format_money(-1i128), "-$1.00");
+        assert_eq!(ac.format_money(1u128), "$1.00");
+
+        assert_eq!(ac.format_money(-1isize), "-$1.00");
+        assert_eq!(ac.format_money(1usize), "$1.00");
+
+        assert_eq!(ac.format_money(-1f32), "-$1.00");
+        assert_eq!(ac.format_money(1f64), "$1.00");
+
+        assert_eq!(ac.format_money(-0i32), "$0.00");
+        assert_eq!(ac.format_money(0u32), "$0.00");
+
+        #[cfg(feature="decimal")]
+        {
+            let ac = Accounting::new_from("$", 2);
+            let x = rust_decimal::Decimal::new(0, 1);
+            assert_eq!(ac.format_money(x), "$0.00"); 
+        }
+    }
+
+    #[test]
+    fn test_accounting_new() {
+        let ac = Accounting::new_from("$", 2);
+        assert_eq!(ac.format_money(123456789.213123), "$123,456,789.21");
+        assert_eq!(ac.format_money(12345678), "$12,345,678.00");
+        assert_eq!(ac.format_money(-12345678), "-$12,345,678.00");
+        assert_eq!(ac.format_money(0), "$0.00");
+
+        let ac = Accounting::new("$", 0, ",", ".",
+        "{s} {v}", "-{s} {v}", "{s} {v}");
+        assert_eq!(ac.format_money(123456789.213123), "$ 123,456,789");
+        assert_eq!(ac.format_money(12345678), "$ 12,345,678");
+        assert_eq!(ac.format_money(-12345678), "-$ 12,345,678");
+        assert_eq!(ac.format_money(0), "$ 0");
+
+        let ac = Accounting::new_from_seperator("€", 2, ".", ",");
+        assert_eq!(ac.format_money(4999.99), "€4.999,99");
+
+        let ac = Accounting::new_from("£ ", 0);
+        assert_eq!(ac.format_money(500000), "£ 500,000");
+    }
+    #[test]
+    fn test_accounting_set() {
+        let mut ac = Accounting::new_from("GBP", 0);
+        ac.set_format_positive("{s} {v}");
+        ac.set_format_negative("{s} ({v})");
+        ac.set_format_zero("{s} --");
+        assert_eq!(ac.format_money(1000000), "GBP 1,000,000");
+        assert_eq!(ac.format_money(-5000), "GBP (5,000)");
+        assert_eq!(ac.format_money(0), "GBP --");
+
+        let mut ac = Accounting::new_from("GBP", 2);
+        ac.set_format("{s} {v}");
+        ac.set_format_negative("{s} ({v})");
+        ac.set_format_zero( "{s} --");
+        assert_eq!(ac.format_money(1000000), "GBP 1,000,000.00");
+        assert_eq!(ac.format_money(-5000), "GBP (5,000.00)");
+        assert_eq!(ac.format_money(0), "GBP --");
+
+        let mut ac = Accounting::new_from("€", 2);
+        ac.set_format_zero("0.-");
+        assert_eq!(ac.format_money(0), "0.-");
+    }
+
 }
