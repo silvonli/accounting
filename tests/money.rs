@@ -41,11 +41,12 @@ fn test_set_decimal_separator() {
 #[cfg(feature="decimal")]
 #[test]
 fn test_format_decimal_type() {
-	let ac = Accounting::new_from("$", 2);
+	let mut ac = Accounting::new_from("$", 2);
+	ac.set_format("{s} {v}");
 	let x = rust_decimal::Decimal::new(0, 1);
-    assert_eq!(ac.format_money(x), "$0.00"); 
+    assert_eq!(ac.format_money(x), "$ 0.00"); 
 	let x = rust_decimal::Decimal::new(-123456789213, 3);
-    assert_eq!(ac.format_money(x), "-$123,456,789.21"); 
+    assert_eq!(ac.format_money(x), "-$ 123,456,789.21"); 
 }
 
 #[test]

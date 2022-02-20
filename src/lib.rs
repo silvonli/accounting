@@ -16,6 +16,19 @@
 //! - {s} is placehoder of symbol, will be replaced by currency symbol like $、￥ and so on.
 //! 
 
+//! ```
+//! # use accounting::Accounting;
+//! #[cfg(feature="decimal")]
+//! fn format_decimal_type() {
+//! 	let mut ac = Accounting::new_from("$", 2);
+//! 	ac.set_format("{s} {v}");
+//! 	let x = rust_decimal::Decimal::new(-12345678921, 2);
+//!     assert_eq!(ac.format_money(x), "-$ 123,456,789.21"); 
+//! }
+//! ```
+//! If you want use decimal numbers，enable feature `decimal`，than you can use decimal number 
+//! supported by [rust_decimal](https://crates.io/crates/rust_decimal) lib. like above.
+
 pub mod unformat_money;
 pub mod format_number;
 pub use format_number::FormatNumber;
