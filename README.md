@@ -26,9 +26,9 @@ Set the format string of `Accounting` variable，then format numbers as money va
 ```Rust
 #[cfg(feature="decimal")]
 fn format_decimal_type() {
-	let mut ac = Accounting::new_from("$", 2);
-	ac.set_format("{s} {v}");
-	let x = rust_decimal::Decimal::new(-12345678921, 2);
+    let mut ac = Accounting::new_from("$", 2);
+    ac.set_format("{s} {v}");
+    let x = rust_decimal::Decimal::new(-12345678921, 2);
     assert_eq!(ac.format_money(x), "-$ 123,456,789.21"); 
 }
 ```
